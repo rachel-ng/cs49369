@@ -2,7 +2,7 @@
 
 Rachel Ng 
 
-p2 - 
+p2 - identify objects
 
 */
 
