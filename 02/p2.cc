@@ -131,7 +131,7 @@ void ConnectedComponents(Image *img, unordered_map<int, set<int>> &equivalence) 
 int main(int argc, char **argv){
   
     if (argc!=3) {
-        printf("Usage: %s binary_image labeled_image\n", argv[0]);
+        printf("USAGE: %s binary_image labeled_image\n", argv[0]);
         return 0;
     }
 
@@ -152,6 +152,8 @@ int main(int argc, char **argv){
     ConnectedComponents(&an_image, equivalent_labels); 
     ConnectedComponents(&an_image, equivalent_labels); 
     ImageColors(&an_image);
+
+
     if (!WriteImage(output_file, an_image)){
         cout << "Can't write to file " << output_file << endl;
         return 0;

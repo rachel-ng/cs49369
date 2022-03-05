@@ -3,7 +3,6 @@
 Rachel Ng 
 
 p1 - converts gray-level image to binary using a given threshold 
-threshold used was 115 
 
 */
 
@@ -39,7 +38,7 @@ void ThreshImage (Image *img, int threshold) {
 int main(int argc, char **argv){
   
     if (argc!=4) {
-        printf("Usage: %s input_image threshold binary_image\n", argv[0]);
+        printf("USAGE: %s input_image threshold binary_image\n", argv[0]);
         return 0;
     }
 

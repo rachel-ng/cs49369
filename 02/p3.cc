@@ -26,7 +26,7 @@ using namespace ComputerVisionProjects;
 int main(int argc, char **argv){
   
     if (argc!=4) {
-        printf("Usage: %s labeled_image output_database output_image\n", argv[0]);
+        printf("USAGE: %s labeled_image output_database output_image\n", argv[0]);
         return 0;
     }
 
@@ -40,6 +40,7 @@ int main(int argc, char **argv){
         cout <<"FILE " << input_file << endl;
         return 0;
     }
+
 
     // process input image
     unordered_map<int,Object> objects_map = GenerateDBEntry(&img); 
