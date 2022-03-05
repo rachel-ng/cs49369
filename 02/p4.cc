@@ -23,22 +23,29 @@ using namespace ComputerVisionProjects;
 
 
 
-unordered_map<int, vector<float>> GetDatabase(string database_name) {
+unordered_map<int, vector<double>> GetDatabase(string database_name) {
     /*
     get database objects as a map 
 
     INPUT   string database file name 
     OUTPUT  map[label] = [...] 
+
+      label: center_x center_y 
+             * min_moment_inertia 
+             * area 
+             * roundedness 
+             orientation_deg
+
     */
 
     bool debug = true;
     if (debug) cout << "DATABASE " << database_name << endl;
     ifstream input_database(database_name); 
-    unordered_map<int, vector<float>> database; 
+    unordered_map<int, vector<double>> database; 
 
     string line;
     while(getline(input_database, line)){
-        vector<float> db_line;
+        vector<double> db_line;
         string accumulator = ""; 
 
         for (auto const c : line) {
@@ -51,45 +58,22 @@ unordered_map<int, vector<float>> GetDatabase(string database_name) {
             }
         }
 
-        database[db_line[0]] = vector<float> (db_line.begin() + 1, db_line.end());
+        database[db_line[0]] = vector<double> (db_line.begin() + 1, db_line.end());
     }
 
     if (debug) cout << database << endl;
     return database;
 }
 
-
-
-float PercentDifference(float a, float b, bool percent=false) {
+double PercentDifference(double a, double b, bool percent=false) {
     return abs(a - b) / ((a + b) / 2) * (!percent ? 1 : 100);
 }
 
-vector<float> CompareObjects(vector<float> object1, vector<float> object2) {
-
-
-
-    // label: center_x center_y 
-    //        * min_moment_inertia 
-    //        * area 
-    //        * roundedness 
-    //        orientation_deg
-
+vector<double> CompareObjects(vector<double> object1, vector<double> object2) {
     vector<int> viable {2, 3, 4};
-
-    vector<float> percent_difference; 
+    vector<double> percent_difference; 
 
     for (int i : viable) {
-        float epsilon = min(object1[i],object2[i]) * 0.10;
-
-        if (abs(object1[i] - object2[i]) < epsilon) {
-            cout << "\tMATCH";
-        }
-
-        cout << "\t" << object1[i] << "\t" << object2[i] << endl;
-        cout << "\t\t" << object1[i] - object2[i] << "\t" << epsilon << endl;
-        cout << "\t\t" << PercentDifference(object1[i], object2[i], true) << "%";
-        cout << endl << endl;
-
         percent_difference.push_back(PercentDifference(object1[i], object2[i]));
     }
 
@@ -115,22 +99,34 @@ int main(int argc, char **argv){
         return 0;
     }
 
-    string object_model_file = "two_objects_db"; 
-    unordered_map<int, vector<float>> object_model_database = GetDatabase(object_model_file);
-    unordered_map<int, vector<float>> input_database = GetDatabase(input_database_file);
+    // string object_model_file = "two_objects_db"; 
+    string object_model_file = "many_objects_1_db"; 
+    unordered_map<int, vector<double>> object_model_database = GetDatabase(object_model_file);
+    unordered_map<int, vector<double>> input_database = GetDatabase(input_database_file);
   
     cout << endl << endl << endl << endl;
 
-    for (auto object : input_database) { 
-        for (auto model_object : object_model_database) {
-            cout << object << endl;
-            cout << model_object << endl;
-            vector<float> differences = CompareObjects(object.second, model_object.second);
-            cout << endl;
-            cout << differences << endl; 
-            cout << endl;
+    for (auto model_object : object_model_database) {
+        cout << model_object.first << endl; 
+        for (auto object : input_database) { 
+            vector<double> differences = CompareObjects(object.second, model_object.second);
+            cout << "   " << model_object.first << "\t" << model_object.second << endl;
+            cout << " * " << object.first << "\t" << object.second << endl;
+            cout << "\t" << differences << endl; 
+
+            
+            for (int i = 0; i < differences.size(); i++) {
+                if (difference < .05) {
+                    cout << "\tMATCH .05\t" << difference[i] << endl;
+                }
+                else if (difference < .1) {
+                    cout << "\tMATCH .1 \t" << difference[i] << endl;
+                }
+            }
             cout << endl;
         } 
+        cout << endl;
+        cout << endl;
     }
 
 
