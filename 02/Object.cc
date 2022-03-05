@@ -76,6 +76,9 @@ pair<int, int> Object::moment_1(){
 
 /*
 orientation of object
+updates center if needed
+does all calculations for second moment 
+set minimum moment of inertia, roundness, and orientation
 
 OUTPUT  minimum moment of inertia, maximum moment of inertia
 */
