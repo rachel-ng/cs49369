@@ -1,3 +1,5 @@
+# Rachel Ng 
+
 ##########################################
 ##
 ## Makefile for Assignment No. 2
