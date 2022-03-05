@@ -26,7 +26,7 @@ int Object::Label() const { return label_; }
 set<pair<int,int>> Object::Pixels() const { return pixels_; }
 int Object::area() const { return pixels_.size(); }
 
-// retrieve center {x,y} or set and return 
+// set center if necessary and retrieve coordinates 
 pair<int,int> Object::center(){
     if (center_area_ != -1 && area() == center_area_) {
         return center_;
