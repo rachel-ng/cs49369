@@ -1,3 +1,10 @@
+/* 
+
+Rachel Ng 
+provided by Professor Stamos 
+
+*/
+
 // Class for representing a 2D gray-scale image,
 // with support for reading/writing pgm images.
 // To be used in Computer Vision class.
