@@ -131,7 +131,7 @@ void ConnectedComponents(Image *img, unordered_map<int, set<int>> &equivalence) 
 int main(int argc, char **argv){
   
     if (argc!=3) {
-        printf("Usage: %s file1 file2\n", argv[0]);
+        printf("Usage: %s binary_image labeled_image\n", argv[0]);
         return 0;
     }
 

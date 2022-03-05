@@ -83,7 +83,7 @@ vector<double> CompareObjects(vector<double> object1, vector<double> object2, ve
 int main(int argc, char **argv){
   
     if (argc!=4) {
-        printf("Usage: %s file1 db_file file2\n", argv[0]);
+        printf("Usage: %s labeled_image database_file output_image\n", argv[0]);
         return 0;
     }
 

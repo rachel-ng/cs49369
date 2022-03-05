@@ -39,7 +39,7 @@ void ThreshImage (Image *img, int threshold) {
 int main(int argc, char **argv){
   
     if (argc!=4) {
-        printf("Usage: %s file1 thresh file2\n", argv[0]);
+        printf("Usage: %s input_image threshold binary_image\n", argv[0]);
         return 0;
     }
 

@@ -26,7 +26,7 @@ using namespace ComputerVisionProjects;
 int main(int argc, char **argv){
   
     if (argc!=4) {
-        printf("Usage: %s file1 db_file file2\n", argv[0]);
+        printf("Usage: %s labeled_image output_database output_image\n", argv[0]);
         return 0;
     }
 
