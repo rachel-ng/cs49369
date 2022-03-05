@@ -19,10 +19,12 @@ p2 - segment binary image into several connected regions
 using namespace std;
 using namespace ComputerVisionProjects;
 
+/*
+set image colors 
 
+INPUT   image 
+*/
 void ImageColors(Image *img) {
-    bool debug = false;
-
     const int rows = img->num_rows();
     const int cols = img->num_columns();
 
@@ -42,18 +44,17 @@ void ImageColors(Image *img) {
     }
 
     img->SetNumberGrayLevels(colors.size() - 1);
-
-    if (debug) {
-        cout << img->num_rows() << " " << img->num_columns() << "\t" << img->num_gray_levels() << endl;
-        cout << "COLORS\t\t" << colors << endl;
-    }
 }
 
+/*
+find colors of neighbors
+
+INPUT   image, pixel x and y coordinates 
+OUTPUT  vector of colors of neighboring pixels 
+*/
 vector<int> NeighborhoodColors(Image *img, int px, int py) {
     // INPUTS   image, (x,y) coords of a pixel
     // RETURNS  vector with the color of the neighborhood of a cell
-    
-    bool debug = false;
 
     const int rows = img->num_rows();
     const int cols = img->num_columns();
@@ -69,7 +70,6 @@ vector<int> NeighborhoodColors(Image *img, int px, int py) {
             // verify x and y in image, add color to vector if != 0
             if ((-1 < x && x < rows) && (-1 < y && y < cols)) {
                 int neighbor_color = img->GetPixel(x,y); 
-                if (debug && true) cout << x << ", " << y << "  " << neighbor_color << ((j == 1) ? "\n" : "\t\t");
                 if (neighbor_color != 0) {
                     nbh_colors.push_back(neighbor_color);
                 }
@@ -77,18 +77,17 @@ vector<int> NeighborhoodColors(Image *img, int px, int py) {
         }
     }
 
-    if (debug && !equal(nbh_colors.begin() + 1, nbh_colors.end(), nbh_colors.begin())) { 
-        cout << "NEIGHBORS\t" << nbh_colors;
-    }
-
     return nbh_colors;
 }
 
+/*
+label all connected components 
 
+INPUT   image, map[label] = {equivalent labels...}
+*/
 void ConnectedComponents(Image *img, unordered_map<int, set<int>> &equivalence) {
     if (img == nullptr) abort();
     
-    bool debug = false; 
     const int rows = img->num_rows();
     const int cols = img->num_columns();
 
@@ -99,24 +98,25 @@ void ConnectedComponents(Image *img, unordered_map<int, set<int>> &equivalence) 
             int pixel_color = img->GetPixel(i,j);
 
             if (pixel_color != 0) { 
-                if (debug) cout << "(" << i << ", " << j << ")\t" << pixel_color << endl;
+                // get vector of colors of neighbors 
                 vector<int> nbh_colors = NeighborhoodColors(img, i, j);
 
+                // make pixel label the lowest label of it's neighbors or 255
                 int pixel_label = nbh_colors.size() > 1 ? *min_element(nbh_colors.begin(), nbh_colors.end()) : 255;
 
+                // create new label if no neighbors are labeled 
                 if (pixel_label == 255) {
-                    if (debug) cout << "PIXEL LABEL\t" << pixel_label;
                     labels++;
                     pixel_label = labels;
                     set<int> equiv {pixel_label};
                     equivalence[pixel_label] = equiv; 
-
-                    if (debug) cout << " -> " << pixel_label << endl;
                 }
 
+                // set pixel to label 
                 img->SetPixel(i,j,pixel_label);
                 img->SetPixel(i,j,*(equivalence[pixel_label]).begin());
 
+                // add neighbors to equivalence map to easily find lowest equivalent label
                 for (auto &n : nbh_colors) {
                     if (n != 0 && n != 255) {
                         equivalence[pixel_label].insert(n);
@@ -146,24 +146,11 @@ int main(int argc, char **argv){
         return 0;
     }
 
-    if (an_image.num_gray_levels() != 1) {
-        cout <<"FILE " << input_file << " not binary" << endl;
-        return 0;
-    }
-
-    bool debug = true; 
 
     unordered_map<int,set<int>> equivalent_labels;
 
-    if (debug) cout << "PASS 1" << endl;
+    // label connected regions 
     ConnectedComponents(&an_image, equivalent_labels); 
-    if (!WriteImage("1_" + output_file, an_image)){
-        cout << "Can't write to file " << output_file << endl;
-        return 0;
-    }
-
-
-    if (debug) cout << "PASS 2" << endl;
     ConnectedComponents(&an_image, equivalent_labels); 
     ImageColors(&an_image);
     if (!WriteImage(output_file, an_image)){
@@ -171,18 +158,6 @@ int main(int argc, char **argv){
         return 0;
     }
 
-
-    if (false) cout << equivalent_labels << endl;
-
-    if (!ReadImage("1_" + output_file, &an_image)) {
-        cout <<"Can't open file " << "1_" + input_file << endl;
-        return 0;
-    }
-    ImageColors(&an_image);
-    if (!WriteImage("1_" + output_file, an_image)){
-        cout << "Can't write to file " << "1_" + output_file << endl;
-        return 0;
-    }
 
     return 0;
 }

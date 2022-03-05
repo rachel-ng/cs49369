@@ -16,6 +16,11 @@ using namespace std;
 using namespace ComputerVisionProjects;
 
 
+/*
+binarize image using a threshold
+
+INPUT   image to threshold, int to use as threshold 
+*/
 void ThreshImage (Image *img, int threshold) {
     if (img == nullptr) abort();
     
@@ -49,8 +54,10 @@ int main(int argc, char **argv){
         return 0;
     }
 
+
     ThreshImage(&an_image, threshold); 
   
+
     if (!WriteImage(output_file, an_image)){
         cout << "FILE " << output_file << endl;
         return 0;
