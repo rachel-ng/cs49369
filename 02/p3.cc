@@ -3,6 +3,7 @@
 Rachel Ng 
 
 p3 - compute object attributes and generate a database  
+USAGE: ./p3 labeled_image output_database output_image
 
 */
 

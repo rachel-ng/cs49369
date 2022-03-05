@@ -3,6 +3,7 @@
 Rachel Ng 
 
 p2 - segment binary image into several connected regions  
+USAGE: ./p2 binary_image labeled_image
 
 */
 
