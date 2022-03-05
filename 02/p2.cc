@@ -2,7 +2,7 @@
 
 Rachel Ng 
 
-p2 - identify objects
+p2 - segment binary image into several connected regions  
 
 */
 
@@ -157,7 +157,6 @@ int main(int argc, char **argv){
 
     if (debug) cout << "PASS 1" << endl;
     ConnectedComponents(&an_image, equivalent_labels); 
-    // ImageColors(&an_image);
     if (!WriteImage("1_" + output_file, an_image)){
         cout << "Can't write to file " << output_file << endl;
         return 0;

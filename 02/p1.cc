@@ -2,7 +2,7 @@
 
 Rachel Ng 
 
-p1 - converts gray-level image to binary  
+p1 - converts gray-level image to binary using a given threshold 
 threshold used was 115 
 
 */

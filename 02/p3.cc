@@ -2,7 +2,7 @@
 
 Rachel Ng 
 
-p3 - 
+p3 - compute object attributes and generate a database  
 
 */
 
@@ -32,7 +32,6 @@ x object area
 roundedness
 orientation (angle in degrees between the axis of minimum inertia and the vertical axis)
 */
-
 
 class Object {
     public: 
@@ -72,7 +71,7 @@ class Object {
             s += "minimum of inertia " + to_string(minimum_moment_inertia_) + "\t";
             s += "area " + to_string(area()) + "\t";
             s += "roundedness " + to_string(roundedness_) + "\t";
-            s += "orientation " + to_string(orientation_degrees_) + "\t";
+            s += "orientation " + to_string(RadiansToDegrees(orientation_)) + "\t";
             return s;
         }
 
@@ -83,7 +82,7 @@ class Object {
             s += to_string(minimum_moment_inertia_) + " ";
             s += to_string(area()) + " ";
             s += to_string(roundedness_) + " ";
-            s += to_string(orientation_degrees_) + " ";
+            s += to_string(RadiansToDegrees(orientation_)) + " ";
             return s;
         }
 
@@ -135,17 +134,15 @@ class Object {
             b *= 2;
 
             const double theta1 = atan2(b, a-c) / 2.0;
-            const double theta1_degrees = 180.0 * theta1 / M_PI;
 
-            if (debug) cout << "THETA1\t" << theta1 << "\t" << theta1_degrees << endl;
+            if (debug) cout << "THETA1\t" << theta1 << "\t" << RadiansToDegrees(theta1) << endl;
 
             // minimum moment of inertia 
             const double e_min = a * sin(theta1) * sin(theta1) - b * sin(theta1) * cos(theta1) + c * cos(theta1) * cos(theta1);
 
             const double theta2 = theta1 + M_PI / 2.0;
-            const double theta2_degrees = 180.0 * theta2 / M_PI;
 
-            if (debug) cout << "THETA2\t" << theta2 << "\t" << theta2_degrees << endl;
+            if (debug) cout << "THETA2\t" << theta2 << "\t" << RadiansToDegrees(theta2) << endl;
 
             // maximum moment of inertia 
             const double e_max = a * sin(theta2) * sin(theta2) - b * sin(theta2) * cos(theta2) + c * cos(theta2) * cos(theta2);
@@ -156,15 +153,14 @@ class Object {
             minimum_moment_inertia_= e_min_;
             roundedness_ = e_min_ / e_max_; 
             orientation_ = theta1; 
-            orientation_degrees_ = theta1_degrees; 
 
             if (debug) cout << e_min << "\t" << e_max << endl;
 
             return {e_min, e_max};
         }
 
-        double orientation() {
-            return orientation_;
+        double orientation(bool degrees=false) const {
+            return !degrees ? orientation_ : RadiansToDegrees(orientation_);
         }
 
 
@@ -181,7 +177,6 @@ class Object {
         double roundedness_; 
 
         double orientation_; 
-        double orientation_degrees_; 
 
 };
 
@@ -192,6 +187,8 @@ ostream& operator<<(ostream& os, const Object object) {
 
 unordered_map<int,Object> GenerateDBEntry(Image *img) {
     if (img == nullptr) abort();
+
+    bool debug = false;
     
     const int rows = img->num_rows();
     const int cols = img->num_columns();
@@ -200,7 +197,7 @@ unordered_map<int,Object> GenerateDBEntry(Image *img) {
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++){ 
             int pixel_color = img->GetPixel(i,j);
-            if (pixel_color != 0 && false) cout << "(" << i << ", " << j << ")\t" << pixel_color << endl;
+            if (pixel_color != 0 && debug) cout << "(" << i << ", " << j << ")\t" << pixel_color << endl;
             if (pixel_color != 0) { 
                 if (objects.count(pixel_color) == 0) objects[pixel_color] = Object(pixel_color); 
                 objects[pixel_color].AddPixel({i,j});
@@ -215,18 +212,17 @@ unordered_map<int,Object> GenerateDBEntry(Image *img) {
         img->SetPixel(oc.first, oc.second, 255);
         // cout << o.second.min_x_ << "\t" << o.second.min_y_ << "\t" << o.second.max_x_ << "\t" << o.second.max_y_ << endl;
 
-        
         DrawLine(oc.first, 
                 oc.second, 
-                round((o.second.max_x_ - oc.first) * cos(o.second.orientation()) + oc.first), 
-                round((o.second.max_x_ - oc.first)* sin(o.second.orientation()) + oc.second), 
+                round(30 * cos(o.second.orientation()) + oc.first), 
+                round(30 * sin(o.second.orientation()) + oc.second), 
                 255, 
                 img);
 
-        cout << o.second.db() << endl;
+        if (debug) cout << o.second.db() << endl;
     }
 
-    cout << endl << objects << endl;
+    if (debug) cout << endl << objects << endl;
 
     return objects;
 }
@@ -249,7 +245,7 @@ int main(int argc, char **argv){
         return 0;
     }
 
-    cout << input_file << endl;
+    // cout << input_file << endl;
 
 
     unordered_map<int,Object> objects_map = GenerateDBEntry(&img); 
