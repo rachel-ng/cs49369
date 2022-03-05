@@ -7,7 +7,6 @@ p2 - segment binary image into several connected regions
 */
 
 #include "image.h"
-#include "util.h"
 #include <cstdio>
 #include <iostream>
 #include <string>
