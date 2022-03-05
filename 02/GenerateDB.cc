@@ -2,7 +2,7 @@
 
 Rachel Ng 
 
-generate database
+generate database by constructing all labeled Objects 
 
 */
 

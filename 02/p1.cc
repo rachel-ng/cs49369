@@ -3,6 +3,7 @@
 Rachel Ng 
 
 p1 - converts gray-level image to binary using a given threshold 
+USAGE: ./p1 input_image threshold binary_image
 
 */
 

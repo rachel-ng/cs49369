@@ -3,6 +3,7 @@
 Rachel Ng 
 
 p4 - object recognition using labeled image and a given database
+USAGE: ./p4 labeled_image database_file output_image
 
 */
 

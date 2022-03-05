@@ -6,7 +6,7 @@
 
 Rachel Ng 
 
-generate database header file
+GenerateDB header file
 
 */
 
