@@ -34,13 +34,13 @@ $(PROGRAM_2): $(ALL_OBJ2)
 	g++ $(C++FLAG) -o $(EXEC_DIR)/$@ $(ALL_OBJ2) $(INCLUDES) $(LIBS_ALL)
 
 # P3
-ALL_OBJ3 = image.o p3.o
+ALL_OBJ3 = image.o p3.o Object.o GenerateDB.o 
 PROGRAM_3 = p3
 $(PROGRAM_3): $(ALL_OBJ3)
 	g++ $(C++FLAG) -o $(EXEC_DIR)/$@ $(ALL_OBJ3) $(INCLUDES) $(LIBS_ALL)
 
 # P4
-ALL_OBJ4 = image.o p4.o
+ALL_OBJ4 = image.o p4.o Object.o GenerateDB.o
 PROGRAM_4 = p4
 $(PROGRAM_4): $(ALL_OBJ4)
 	g++ $(C++FLAG) -o $(EXEC_DIR)/$@ $(ALL_OBJ4) $(INCLUDES) $(LIBS_ALL)
