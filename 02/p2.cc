@@ -20,7 +20,7 @@ using namespace std;
 using namespace ComputerVisionProjects;
 
 /*
-set image colors 
+set image colors so we have a visible range 
 
 INPUT   image 
 */
@@ -60,7 +60,7 @@ vector<int> NeighborhoodColors(Image *img, int px, int py) {
     const int cols = img->num_columns();
     const int pixel_color = img->GetPixel(px,py);
 
-    vector<int> nbh_colors;
+    vector<int> neighborhood_colors;
 
     for (int i = -1; i < 2; i++) {
         for (int j = -1; j < 2; j++) {
@@ -71,13 +71,13 @@ vector<int> NeighborhoodColors(Image *img, int px, int py) {
             if ((-1 < x && x < rows) && (-1 < y && y < cols)) {
                 int neighbor_color = img->GetPixel(x,y); 
                 if (neighbor_color != 0) {
-                    nbh_colors.push_back(neighbor_color);
+                    neighborhood_colors.push_back(neighbor_color);
                 }
             }
         }
     }
 
-    return nbh_colors;
+    return neighborhood_colors;
 }
 
 /*
@@ -98,29 +98,27 @@ void ConnectedComponents(Image *img, unordered_map<int, set<int>> &equivalence) 
             int pixel_color = img->GetPixel(i,j);
 
             if (pixel_color != 0) { 
-                // get vector of colors of neighbors 
-                vector<int> nbh_colors = NeighborhoodColors(img, i, j);
+                vector<int> neighborhood_colors = NeighborhoodColors(img, i, j);
 
-                // make pixel label the lowest label of it's neighbors or 255
-                int pixel_label = nbh_colors.size() > 1 ? *min_element(nbh_colors.begin(), nbh_colors.end()) : 255;
+                // make choose lowest label of neighbors or 255
+                int pixel_label = neighborhood_colors.size() > 1 ? *min_element(neighborhood_colors.begin(), neighborhood_colors.end()) : 255;
 
                 // create new label if no neighbors are labeled 
                 if (pixel_label == 255) {
                     labels++;
                     pixel_label = labels;
-                    set<int> equiv {pixel_label};
-                    equivalence[pixel_label] = equiv; 
+                    set<int> equivalent_set {pixel_label};
+                    equivalence[pixel_label] = equivalent_set; 
                 }
 
-                // set pixel to label 
                 img->SetPixel(i,j,pixel_label);
                 img->SetPixel(i,j,*(equivalence[pixel_label]).begin());
 
                 // add neighbors to equivalence map to easily find lowest equivalent label
-                for (auto &n : nbh_colors) {
-                    if (n != 0 && n != 255) {
-                        equivalence[pixel_label].insert(n);
-                        equivalence[n].insert(pixel_label);
+                for (auto &neighbor_color : neighborhood_colors) {
+                    if (neighbor_color != 0 && neighbor_color != 255) {
+                        equivalence[pixel_label].insert(neighbor_color);
+                        equivalence[neighbor_color].insert(pixel_label);
                     }
                 }
 
@@ -139,9 +137,9 @@ int main(int argc, char **argv){
     const string input_file(argv[1]);
     const string output_file(argv[2]);
 
-    Image an_image;
+    Image img;
 
-    if (!ReadImage(input_file, &an_image)) {
+    if (!ReadImage(input_file, &img)) {
         cout <<"Can't open file " << input_file << endl;
         return 0;
     }
@@ -150,12 +148,12 @@ int main(int argc, char **argv){
     unordered_map<int,set<int>> equivalent_labels;
 
     // label connected regions 
-    ConnectedComponents(&an_image, equivalent_labels); 
-    ConnectedComponents(&an_image, equivalent_labels); 
-    ImageColors(&an_image);
+    ConnectedComponents(&img, equivalent_labels); 
+    ConnectedComponents(&img, equivalent_labels); 
+    ImageColors(&img);
 
 
-    if (!WriteImage(output_file, an_image)){
+    if (!WriteImage(output_file, img)){
         cout << "Can't write to file " << output_file << endl;
         return 0;
     }

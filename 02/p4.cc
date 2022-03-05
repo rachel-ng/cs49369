@@ -46,6 +46,7 @@ unordered_map<int, vector<double>> GetDatabase(string database_name) {
             }
         }
 
+        // map[label] = [...]
         database[db_line[0]] = vector<double> (db_line.begin() + 1, db_line.end());
     }
 

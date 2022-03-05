@@ -47,14 +47,14 @@ int main(int argc, char **argv){
     unordered_map<int,Object> objects_map = GenerateDBEntry(&img); 
 
     // draw center and orientation of all objects
-    for (auto &o : objects_map) {
-        pair<int,int> oc = o.second.center();
-        img.SetPixel(oc.first, oc.second, 255);
+    for (auto &obj : objects_map) {
+        pair<int,int> object_center = obj.second.center();
+        img.SetPixel(object_center.first, object_center.second, 255);
 
-        DrawLine(oc.first, 
-                oc.second, 
-                round(30 * cos(o.second.orientation()) + oc.first), 
-                round(30 * sin(o.second.orientation()) + oc.second), 
+        DrawLine(object_center.first, 
+                object_center.second, 
+                round(30 * cos(obj.second.orientation()) + object_center.first), 
+                round(30 * sin(obj.second.orientation()) + object_center.second), 
                 255, 
                 &img);
     }

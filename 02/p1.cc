@@ -21,7 +21,7 @@ binarize image using a threshold
 
 INPUT   image to threshold, int to use as threshold 
 */
-void ThreshImage (Image *img, int threshold) {
+void ThresholdImage (Image *img, int threshold) {
     if (img == nullptr) abort();
     
     const int rows = img->num_rows();
@@ -47,18 +47,18 @@ int main(int argc, char **argv){
     const int threshold(stoi(argv[2]));
     const string output_file(argv[3]);
 
-    Image an_image;
+    Image img;
 
-    if (!ReadImage(input_file, &an_image)) {
+    if (!ReadImage(input_file, &img)) {
         cout <<"FILE " << input_file << endl;
         return 0;
     }
 
 
-    ThreshImage(&an_image, threshold); 
+    ThresholdImage(&img, threshold); 
   
 
-    if (!WriteImage(output_file, an_image)){
+    if (!WriteImage(output_file, img)){
         cout << "FILE " << output_file << endl;
         return 0;
     }
