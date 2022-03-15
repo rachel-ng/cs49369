@@ -26,8 +26,8 @@ USAGE: ./h4 input_image voting_array threshold output_image
 
 
 
-for i in Images/*.pgm; do echo ./p1 ${i} h1_${i##*/}; done
-for i in Images/*.pgm; do ./p1 ${i} h1_${i##*/}; done
+for i in Images/*.pgm; do echo ./h1 ${i} h1_${i##*/}; done
+for i in Images/*.pgm; do ./h1 ${i} h1_${i##*/}; done
 
 
 for i in h1_*.pgm;do name=${i##h1_} base=${name%.pgm}; echo ./h2 ${i} 100 binary_${name}; done;
