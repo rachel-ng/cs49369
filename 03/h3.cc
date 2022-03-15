@@ -2,7 +2,7 @@
 
 Rachel Ng 
 
-h3 - Hough Transform voting array 
+h3 - generate image of Hough Transform of space and voting array
 USAGE: ./h3 input_image output_image voting_array 
 
 */
@@ -32,20 +32,23 @@ for missing value
 
 INPUT   rho, theta, x, y 
         -1 if you don't have the value
+OUTPUT  calculated rho 
 */
 int calculateRho(double theta, int x, int y) {
     return (x * std::cos(theta)) + (y * std::sin(theta)); 
 }
 
 /*
+generate voting array of Hough Transform of space 
 
-INPUT Image img 
+INPUT   Image img 
+OUTPUT  vector<vector int> voting array
 */
 std::vector<std::vector<int>> HoughTransform(Image *img) {
     const int rows = img->num_rows();
     const int cols = img->num_columns(); 
     int max_rho = std::sqrt(std::pow(rows, 2) + std::pow(cols, 2)) + 1;
-    int max_theta = 180 + 1;
+    int max_theta = 360 + 1;
     std::vector<std::vector<int>> voting_array(max_rho, std::vector<int> (max_theta, 0));
 
     for (int i = 0; i < rows; i++) {
@@ -96,9 +99,7 @@ int main(int argc, char **argv){
     for (int i = 0; i < voting_array.size(); i++) {
         for (int j = 0; j < voting_array[0].size(); j++){ 
             hough_space_img.SetPixel(i, j, voting_array[i][j]);
-            if (voting_array[i][j] > 0) {
-                voting_array_stream << i << " " << j << " "<< voting_array[i][j] << std::endl;
-            }
+            voting_array_stream << i << " " << j << " "<< voting_array[i][j] << std::endl;
         }
     }
     voting_array_stream.close();
