@@ -30,7 +30,7 @@ $(PROGRAM_1): $(ALL_OBJ1)
 	g++ $(C++FLAG) -o $(EXEC_DIR)/$@ $(ALL_OBJ1) $(INCLUDES) $(LIBS_ALL)
 
 # P2
-ALL_OBJ2 = image.o h2.o
+ALL_OBJ2 = image.o Object.o imutils.o h2.o
 PROGRAM_2 = h2
 $(PROGRAM_2): $(ALL_OBJ2)
 	g++ $(C++FLAG) -o $(EXEC_DIR)/$@ $(ALL_OBJ2) $(INCLUDES) $(LIBS_ALL)
@@ -42,7 +42,7 @@ $(PROGRAM_3): $(ALL_OBJ3)
 	g++ $(C++FLAG) -o $(EXEC_DIR)/$@ $(ALL_OBJ3) $(INCLUDES) $(LIBS_ALL)
 
 # P4
-ALL_OBJ4 = image.o h4.o 
+ALL_OBJ4 = image.o Object.o imutils.o h4.o 
 PROGRAM_4 = h4
 $(PROGRAM_4): $(ALL_OBJ4)
 	g++ $(C++FLAG) -o $(EXEC_DIR)/$@ $(ALL_OBJ4) $(INCLUDES) $(LIBS_ALL)
@@ -57,3 +57,4 @@ all:
 # Clean files
 clean:
 	(rm -f *.o; rm -f $(PROGRAM_1); rm -f $(PROGRAM_2); rm -f $(PROGRAM_3); rm -f $(PROGRAM_4))
+
