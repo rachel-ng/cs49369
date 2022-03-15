@@ -40,6 +40,13 @@ int calculateRho(double theta, int x, int y) {
     return (x * std::cos(theta)) + (y * std::sin(theta)); 
 }
 
+/*
+get voting array from file 
+
+INPUT   voting array file name
+        max rho and max theta 
+OUTPUT  vector<vector <int>> voting_array[rho][theta]
+*/
 std::vector<std::vector<int>> GetVotingArray(std::string voting_array_file, int max_rho, int max_theta) {
     std::vector<std::vector<int>> voting_array(max_rho, std::vector<int> (max_theta, 0));
 
@@ -86,16 +93,10 @@ int main(int argc, char **argv){
 
     std::vector<std::vector<int>> voting_array = GetVotingArray(voting_array_file, max_rho, max_theta);
 
+
+    // create image of hough space 
     Image hough_space_img;
-    hough_space_img.AllocateSpaceAndSetSize(voting_array.size(), voting_array[0].size());
-    hough_space_img.SetNumberGrayLevels(255);
-
-    for (int i = 0; i < voting_array.size(); i++) {
-        for (int j = 0; j < voting_array[0].size(); j++){ 
-            hough_space_img.SetPixel(i, j, voting_array[i][j]);
-        }
-    }
-
+    HoughSpaceImage(&hough_space_img, voting_array);
     ThresholdImage(&hough_space_img, threshold); 
     std::unordered_map<int, Object> objects = ConnectedComponents(&hough_space_img);
 

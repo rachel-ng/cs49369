@@ -38,14 +38,13 @@ void ThresholdImage(ComputerVisionProjects::Image *img, int threshold) {
 }
 
 
-void HoughSpaceImg(ComputerVisionProjects::Image *img, std::vector<std::vector<int>> voting_array) {
-    ComputerVisionProjects::Image hough_space_img;
-    hough_space_img.AllocateSpaceAndSetSize(voting_array.size(), voting_array[0].size());
-    hough_space_img.SetNumberGrayLevels(255);
+void HoughSpaceImage(ComputerVisionProjects::Image *img, std::vector<std::vector<int>> voting_array) {
+    img->AllocateSpaceAndSetSize(voting_array.size(), voting_array[0].size());
+    img->SetNumberGrayLevels(255);
 
     for (int i = 0; i < voting_array.size(); i++) {
         for (int j = 0; j < voting_array[0].size(); j++){ 
-            hough_space_img.SetPixel(i, j, voting_array[i][j]);
+            img->SetPixel(i, j, voting_array[i][j]);
         }
     }
 }
