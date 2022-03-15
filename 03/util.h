@@ -31,7 +31,6 @@ std::ostream& operator<<(std::ostream& os, const std::unordered_map<T, S>& m);
 
 
 
-
 template <typename T, typename S>
 std::ostream& operator<<(std::ostream& os, const std::pair<T, S>& p) {
     os << "(" << p.first << ", " << p.second << ")";
@@ -63,7 +62,7 @@ std::ostream& operator<<(std::ostream& os, const std::set<T>& s) {
 template <typename T, typename S>
 std::ostream& operator<<(std::ostream& os, const std::unordered_map<T, S>& m) {
     for (auto i : m) {
-        os << i.first << ":\t" << i.second << "\n"; 
+        os << i.first << "\t" << i.second << "\n"; 
     }
     return os;
 }
