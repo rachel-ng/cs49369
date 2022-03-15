@@ -39,7 +39,7 @@ void ThresholdImage(ComputerVisionProjects::Image *img, int threshold) {
 
 
 void HoughSpaceImg(ComputerVisionProjects::Image *img, std::vector<std::vector<int>> voting_array) {
-    Image hough_space_img;
+    ComputerVisionProjects::Image hough_space_img;
     hough_space_img.AllocateSpaceAndSetSize(voting_array.size(), voting_array[0].size());
     hough_space_img.SetNumberGrayLevels(255);
 
