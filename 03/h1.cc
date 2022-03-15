@@ -8,6 +8,7 @@ USAGE: ./h1 input_image output_image
 */
 
 #include "image.h"
+#include "Pixel.h"
 #include "util.h"
 #include <cstdio>
 #include <cmath>
@@ -26,12 +27,6 @@ std::vector<std::vector<int>> sobel_x = {{-1,  0,  1},
 std::vector<std::vector<int>> sobel_y = {{ 1,  2,  1}, 
                                          { 0,  0,  0}, 
                                          {-1, -2, -1}};
-
-struct Pixel {
-    int x;
-    int y; 
-    Pixel(int x_, int y_) : x(x_), y(y_) {};
-};
 
 
 bool between(int small, int value, int big) {
