@@ -1,8 +1,10 @@
+/* 
+
+Rachel Ng 
+
+*/
+
 #include "imutils.h"
-
-
-
-
 
 std::ostream& operator<<(std::ostream& os, const Pixel& p) {
     os << "(" << p.x << ", " << p.y << ")";
@@ -38,6 +40,13 @@ void ThresholdImage(ComputerVisionProjects::Image *img, int threshold) {
 }
 
 
+/*
+allocate img size and gray levels
+draw voting array on image for visualization 
+
+INPUT   image to draw on
+        voting array to draw 
+*/
 void HoughSpaceImage(ComputerVisionProjects::Image *img, std::vector<std::vector<int>> voting_array) {
     img->AllocateSpaceAndSetSize(voting_array.size(), voting_array[0].size());
     img->SetNumberGrayLevels(255);
@@ -50,6 +59,11 @@ void HoughSpaceImage(ComputerVisionProjects::Image *img, std::vector<std::vector
 }
 
 
+/*
+print set of colors in image
+
+INPUT   image to look at 
+*/
 void ImageColors(ComputerVisionProjects::Image *img) {
     const int rows = img->num_rows();
     const int cols = img->num_columns();
@@ -68,13 +82,11 @@ void ImageColors(ComputerVisionProjects::Image *img) {
 
 /*
 find colors of neighbors
+
 INPUT   image, pixel x and y coordinates
 OUTPUT  vector of colors of neighboring pixels
 */
 std::vector<int> NeighborhoodColors(ComputerVisionProjects::Image *img, int px, int py) {
-    // INPUTS   image, (x,y) coords of a pixel
-    // RETURNS  vector with the color of the neighborhood of a cell
-
     const int rows = img->num_rows();
     const int cols = img->num_columns();
     const int pixel_color = img->GetPixel(px,py);
@@ -101,6 +113,7 @@ std::vector<int> NeighborhoodColors(ComputerVisionProjects::Image *img, int px, 
 
 /*
 label all connected components
+
 INPUT   image, map[label] = {equivalent labels...}
 */
 void LabelConnectedRegions(ComputerVisionProjects::Image *img, std::unordered_map<int, std::set<int>> &equivalence) {
@@ -145,6 +158,13 @@ void LabelConnectedRegions(ComputerVisionProjects::Image *img, std::unordered_ma
     }
 }
 
+/*
+label / create all objects
+add pixels to array 
+
+INPUT   image 
+OUTPUT  objects[label] = object
+*/
 std::unordered_map<int,Object> LabelObjects(ComputerVisionProjects::Image *img) {
 	const int rows = img->num_rows();
     const int cols = img->num_columns();
@@ -163,6 +183,12 @@ std::unordered_map<int,Object> LabelObjects(ComputerVisionProjects::Image *img) 
 	return objects;
 }
 
+/*
+function to run connected components on an image 
+
+INPUT   image to run on 
+OUTPUT  objects[label] = object
+*/
 
 std::unordered_map<int,Object> ConnectedComponents(ComputerVisionProjects::Image *img) {
 

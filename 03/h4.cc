@@ -41,6 +41,21 @@ int calculateRho(double theta, int x, int y) {
 }
 
 /*
+compute missing value set to -1 
+    rho = (x * std::cos(theta)) + (y * std::sin(theta)) 
+
+INPUT   rho, theta, x, y 
+*/
+int calculateMissing(int rho, double theta, int x, int y) {
+    if (x == -1) {
+        return (rho - (y * std::sin(theta))) / std::cos(theta);
+    }
+    else if (y == -1) {
+        return (rho - (x * std::cos(theta))) / std::sin(theta);
+    }
+}
+
+/*
 get voting array from file 
 
 INPUT   voting array file name
@@ -85,7 +100,6 @@ int main(int argc, char **argv){
     }
 
 
-
     const int rows = img.num_rows();
     const int cols = img.num_columns(); 
     int max_rho = std::sqrt(std::pow(rows, 2) + std::pow(cols, 2)) + 1;
@@ -99,6 +113,14 @@ int main(int argc, char **argv){
     HoughSpaceImage(&hough_space_img, voting_array);
     ThresholdImage(&hough_space_img, threshold); 
     std::unordered_map<int, Object> objects = ConnectedComponents(&hough_space_img);
+
+
+    if (!WriteImage("thresh_" + output_file, hough_space_img)){
+        std::cout << "FILE " << "thresh_" + output_file << std::endl;
+        return 0;
+    }
+
+    std::cout << rows << "x" << cols << std::endl;
 
     // calculate weighted average center 
     for (auto &obj : objects) {
@@ -115,18 +137,34 @@ int main(int argc, char **argv){
             center_col += pixel.second * votes; 
             center_area += votes;
 		}
+
         obj.second.center_ = {center_row / center_area, center_col / center_area};
+    } 
+
+    for (auto &obj : objects) {
+        std::pair<int, int> center = obj.second.center_;
+        std::cout << center << std::endl;
+
+        std::pair<int, int> x0 = {0, calculateMissing(center.first, center.second * (M_PI / 180.0), 0, -1)};
+        if (!between(-1, x0.second, cols)) {
+            x0 = {rows-1, calculateMissing(center.first, center.second * (M_PI / 180.0), rows-1, -1)};
+        } 
+
+        std::pair<int, int> y0 = {calculateMissing(center.first, center.second * (M_PI / 180.0), -1, 0), 0};
+        if (!between(-1, y0.first, rows)) {
+            y0 = {calculateMissing(center.first, center.second * (M_PI / 180.0), -1, cols-1), cols-1};
+        }
+
+        if (between(-1, x0.second, cols) && between(-1, y0.first, rows)) { 
+            std::cout << x0 << "\t" << y0 << std::endl;
+
+            ComputerVisionProjects::DrawLine(x0.first, x0.second,
+                                             y0.first, y0.second,
+                                             255, 
+                                             &img);
+            std::cout << x0 << "\t" << y0 << std::endl;
+        }
     }
-
-    
-    std::cout << objects << std::endl;
-
-    if (!WriteImage("thresh_" + output_file, hough_space_img)){
-        std::cout << "FILE " << "thresh_" + output_file << std::endl;
-        return 0;
-    }
-
-
 
     if (!WriteImage(output_file, img)){
         std::cout << "FILE " << output_file << std::endl;
