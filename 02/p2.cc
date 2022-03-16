@@ -10,6 +10,7 @@ USAGE: ./p2 binary_image labeled_image
 #include "image.h"
 #include <cstdio>
 #include <iostream>
+#include <algorithm>
 #include <string>
 #include <vector>
 #include <set>

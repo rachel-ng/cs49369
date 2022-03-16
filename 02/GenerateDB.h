@@ -11,7 +11,6 @@ GenerateDB header file
 */
 
 #include "image.h"
-#include "util.h"
 #include "Object.h"
 #include <cstdio>
 #include <cmath>
