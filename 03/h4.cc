@@ -41,7 +41,7 @@ int calculateRho(double theta, int x, int y) {
 }
 
 /*
-compute missing value set to -1 
+compute missing value (-1) 
     rho = (x * std::cos(theta)) + (y * std::sin(theta)) 
 
 INPUT   rho, theta, x, y 
@@ -71,7 +71,7 @@ std::vector<std::vector<int>> GetVotingArray(std::string voting_array_file, int 
         std::stringstream current(line);
         int rho, theta, votes;
         while (current >> rho >> theta >> votes) {
-            // std::cout << "voting_array[" << rho << "][" << theta << "] = " << votes << std::endl;
+            std::cout << "voting_array[" << rho << "][" << theta << "] = " << votes << std::endl;
             voting_array[rho][theta] = votes;
         }
     }
@@ -103,7 +103,7 @@ int main(int argc, char **argv){
     const int rows = img.num_rows();
     const int cols = img.num_columns(); 
     int max_rho = std::sqrt(std::pow(rows, 2) + std::pow(cols, 2)) + 1;
-    int max_theta = 360 + 1;
+    int max_theta = 360;
 
     std::vector<std::vector<int>> voting_array = GetVotingArray(voting_array_file, max_rho, max_theta);
 
@@ -125,7 +125,7 @@ int main(int argc, char **argv){
     // calculate weighted average center 
     for (auto &obj : objects) {
         std::set<std::pair<int, int>> pixels = obj.second.pixels_;
-		std::cout << pixels << std::endl;
+		// std::cout << "pixels: " << pixels << std::endl;
 
         int center_area = 0; 
         int center_row = 0;
@@ -141,28 +141,35 @@ int main(int argc, char **argv){
         obj.second.center_ = {center_row / center_area, center_col / center_area};
     } 
 
+    std::set<std::pair<int, int>> centers; 
+
     for (auto &obj : objects) {
         std::pair<int, int> center = obj.second.center_;
+
         std::cout << center << std::endl;
 
-        std::pair<int, int> x0 = {0, calculateMissing(center.first, center.second * (M_PI / 180.0), 0, -1)};
+        int y_missing = calculateMissing(center.first, center.second * (M_PI / 360.0), 0, -1);
+        std::pair<int, int> x0 = {0, y_missing};
+
         if (!between(-1, x0.second, cols)) {
-            x0 = {rows-1, calculateMissing(center.first, center.second * (M_PI / 180.0), rows-1, -1)};
+            y_missing = calculateMissing(center.first, center.second * (M_PI / 360.0), rows-1, -1);
+            x0 = {rows-1, y_missing};
         } 
 
-        std::pair<int, int> y0 = {calculateMissing(center.first, center.second * (M_PI / 180.0), -1, 0), 0};
+        int x_missing = calculateMissing(center.first, center.second * (M_PI / 360.0), -1, 0);
+        std::pair<int, int> y0 = {x_missing, 0};
+
         if (!between(-1, y0.first, rows)) {
-            y0 = {calculateMissing(center.first, center.second * (M_PI / 180.0), -1, cols-1), cols-1};
+            x_missing = calculateMissing(center.first, center.second * (M_PI / 360.0), -1, cols-1);
+            y0 = {x_missing, cols-1};
         }
 
-        if (between(-1, x0.second, cols) && between(-1, y0.first, rows)) { 
-            std::cout << x0 << "\t" << y0 << std::endl;
-
+        // std::cout << "\tendpoints\t" << x0 << "\t" << y0 << std::endl;
+        if (between(-1, x0.second, cols) && between(-1, y0.first, rows) && x0 != y0) { 
             ComputerVisionProjects::DrawLine(x0.first, x0.second,
                                              y0.first, y0.second,
                                              255, 
                                              &img);
-            std::cout << x0 << "\t" << y0 << std::endl;
         }
     }
 

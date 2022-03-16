@@ -198,7 +198,7 @@ std::unordered_map<int,Object> ConnectedComponents(ComputerVisionProjects::Image
     LabelConnectedRegions(img, equivalent_labels);
     LabelConnectedRegions(img, equivalent_labels);
 
-	ImageColors(img);
+	// ImageColors(img);
 
 	std::unordered_map<int,Object> objects = LabelObjects(img);
     return objects; 

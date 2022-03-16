@@ -48,14 +48,14 @@ std::vector<std::vector<int>> HoughTransform(Image *img) {
     const int rows = img->num_rows();
     const int cols = img->num_columns(); 
     int max_rho = std::sqrt(std::pow(rows, 2) + std::pow(cols, 2)) + 1;
-    int max_theta = 360 + 1;
+    int max_theta = 360;
     std::vector<std::vector<int>> voting_array(max_rho, std::vector<int> (max_theta, 0));
 
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
             if (img->GetPixel(i, j) == 255) {
                 for (int theta = 0; theta < max_theta; theta++){ 
-                    int rho = calculateRho(theta * (M_PI / 180.0), i, j);
+                    int rho = calculateRho(theta * (M_PI / 360.0), i, j);
                     if (between(-1, rho, max_rho)) {
                         voting_array[rho][theta]++;
                     }
