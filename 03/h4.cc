@@ -10,7 +10,6 @@ USAGE: ./h4 input_image voting_array threshold output_image
 #include "image.h"
 #include "Object.h"
 #include "imutils.h"
-#include "util.h"
 #include <cstdio>
 #include <cmath>
 #include <iostream>

@@ -4,7 +4,6 @@
 #define IMUTILS_H 
 
 #include "image.h"
-#include "util.h"
 #include "Pixel.h"
 #include "Object.h"
 #include <cstdio>
@@ -16,10 +15,6 @@
 #include <set>
 #include <unordered_map>
 
-
-std::ostream& operator<<(std::ostream& os, const Object& o);
-
-std::ostream& operator<<(std::ostream& os, const Pixel& p);
 
 void ThresholdImage(ComputerVisionProjects::Image *img, int);
 void HoughSpaceImage(ComputerVisionProjects::Image *img, std::vector<std::vector<int>>);

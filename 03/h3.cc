@@ -8,7 +8,6 @@ USAGE: ./h3 input_image output_image voting_array
 */
 
 #include "image.h"
-#include "util.h"
 #include <cstdio>
 #include <cmath>
 #include <iostream>

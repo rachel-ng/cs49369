@@ -9,7 +9,6 @@ USAGE: ./h1 input_image output_image
 
 #include "image.h"
 #include "Pixel.h"
-#include "util.h"
 #include <cstdio>
 #include <cmath>
 #include <iostream>
