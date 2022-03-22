@@ -99,7 +99,7 @@ int main(int argc, char **argv){
     for (int i = 0; i < voting_array.size(); i++) {
         for (int j = 0; j < voting_array[0].size(); j++){ 
             hough_space_img.SetPixel(i, j, voting_array[i][j]);
-            voting_array_stream << i << " " << j << " "<< voting_array[i][j] << std::endl;
+            voting_array_stream << voting_array[i][j] << std::endl;
         }
     }
     voting_array_stream.close();
