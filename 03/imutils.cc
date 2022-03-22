@@ -6,18 +6,6 @@ Rachel Ng
 
 #include "imutils.h"
 
-std::ostream& operator<<(std::ostream& os, const Pixel& p) {
-    os << "(" << p.x << ", " << p.y << ")";
-    return os;
-}
-
-
-std::ostream& operator<<(std::ostream& os, const Object& o) {
-    os << o.label_ << " " << o.center_ << "\t" << o.pixels_ << "\n"; 
-    return os;
-}
-
-
 
 /*
 binarize image using a threshold
@@ -71,8 +59,6 @@ void ImageColors(ComputerVisionProjects::Image *img) {
             colors.insert(img->GetPixel(i,j));
         }
     }
-
-	std::cout << colors << std::endl;
 }
 
 
