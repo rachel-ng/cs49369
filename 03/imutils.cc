@@ -48,9 +48,6 @@ INPUT   image to draw on
         voting array to draw 
 */
 void HoughSpaceImage(ComputerVisionProjects::Image *img, std::vector<std::vector<int>> voting_array) {
-    img->AllocateSpaceAndSetSize(voting_array.size(), voting_array[0].size());
-    img->SetNumberGrayLevels(255);
-
     for (int i = 0; i < voting_array.size(); i++) {
         for (int j = 0; j < voting_array[0].size(); j++){ 
             img->SetPixel(i, j, voting_array[i][j]);
