@@ -46,7 +46,7 @@ compute missing value (-1)
 
 INPUT   rho, theta, x, y 
 */
-int calculateMissing(int rho, double theta, int x, int y) {
+int calculateMissing(double rho, double theta, int x, int y) {
     if (x == -1) {
         return (rho - (y * std::sin(theta))) / std::cos(theta);
     }
@@ -67,12 +67,15 @@ std::vector<std::vector<int>> GetVotingArray(std::string voting_array_file, int 
 
     std::ifstream voting_array_stream(voting_array_file);
     std::string line;
+    int i = 0;
     while(std::getline(voting_array_stream, line)){
         std::stringstream current(line);
-        int rho, theta, votes;
-        while (current >> rho >> theta >> votes) {
-            std::cout << "voting_array[" << rho << "][" << theta << "] = " << votes << std::endl;
+        int votes;
+        while (current >> votes) {
+            int rho = i/max_theta;
+            int theta = i% max_theta;
             voting_array[rho][theta] = votes;
+            i++;
         }
     }
     voting_array_stream.close();
@@ -107,18 +110,22 @@ int main(int argc, char **argv){
 
     std::vector<std::vector<int>> voting_array = GetVotingArray(voting_array_file, max_rho, max_theta);
 
-
     // create image of hough space 
     Image hough_space_img;
+    hough_space_img.AllocateSpaceAndSetSize(voting_array.size(), voting_array[0].size());
+
     HoughSpaceImage(&hough_space_img, voting_array);
+
+    hough_space_img.SetNumberGrayLevels(255);
     ThresholdImage(&hough_space_img, threshold); 
     std::unordered_map<int, Object> objects = ConnectedComponents(&hough_space_img);
-
 
     if (!WriteImage("thresh_" + output_file, hough_space_img)){
         std::cout << "FILE " << "thresh_" + output_file << std::endl;
         return 0;
     }
+
+
 
     std::cout << rows << "x" << cols << std::endl;
 
@@ -145,33 +152,38 @@ int main(int argc, char **argv){
 
     for (auto &obj : objects) {
         std::pair<int, int> center = obj.second.center_;
+        double rho = center.first;
+        double theta = 1.0 * center.second * (M_PI / 360.0);
 
-        std::cout << center << std::endl;
+        std::pair<int, int> x_start = {0,-1};
+        x_start.second = calculateMissing(rho, theta, x_start.first, -1);
+        std::pair<int, int> x_end = {rows - 1, -1};
+        x_end.second = calculateMissing(rho, theta, x_end.first, -1);
 
-        int y_missing = calculateMissing(center.first, center.second * (M_PI / 360.0), 0, -1);
-        std::pair<int, int> x0 = {0, y_missing};
-
-        if (!between(-1, x0.second, cols)) {
-            y_missing = calculateMissing(center.first, center.second * (M_PI / 360.0), rows-1, -1);
-            x0 = {rows-1, y_missing};
-        } 
-
-        int x_missing = calculateMissing(center.first, center.second * (M_PI / 360.0), -1, 0);
-        std::pair<int, int> y0 = {x_missing, 0};
-
-        if (!between(-1, y0.first, rows)) {
-            x_missing = calculateMissing(center.first, center.second * (M_PI / 360.0), -1, cols-1);
-            y0 = {x_missing, cols-1};
-        }
-
-        // std::cout << "\tendpoints\t" << x0 << "\t" << y0 << std::endl;
-        if (between(-1, x0.second, cols) && between(-1, y0.first, rows) && x0 != y0) { 
-            ComputerVisionProjects::DrawLine(x0.first, x0.second,
-                                             y0.first, y0.second,
-                                             255, 
+        if (between(-1, x_start.second, cols) && between(-1, x_end.second, cols)) {
+            ComputerVisionProjects::DrawLine(x_start.first, x_start.second,
+                                             x_end.first, x_end.second,
+                                             255,
                                              &img);
         }
-    }
+
+
+
+        std::pair<int, int> y_start = {-1, 0};
+        y_start.first = calculateMissing(rho, theta, -1, y_start.second);
+        std::pair<int, int> y_end = {-1, cols - 1};
+        y_end.first = calculateMissing(rho, theta, -1, y_end.second);
+
+        if (between(-1, y_start.first, rows) && between(-1, y_end.first, rows)) {
+            ComputerVisionProjects::DrawLine(y_start.first, y_start.second,
+                                             y_end.first, y_end.second,
+                                             255,
+                                             &img);
+        }
+
+
+
+	}
 
     if (!WriteImage(output_file, img)){
         std::cout << "FILE " << output_file << std::endl;
