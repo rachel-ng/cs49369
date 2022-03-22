@@ -48,3 +48,10 @@ for i in Images/*.pgm;do name=${i##*/} base=${name%.pgm}; ./h4 ${i} h3_${base}.t
 ./h4 Images/hough_simple_2.pgm h3_hough_simple_2.txt 150 h4_hough_simple_2.pgm
 
 
+
+open *_hough_complex_1.pgm
+open *_hough_simple_1.pgm
+open *_hough_simple_2.pgm
+
+
+
