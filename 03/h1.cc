@@ -73,10 +73,10 @@ void locateEdges(Image *img) {
     // calculate gradient values 
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++){ 
-            // std::cout << "(" << i << ", " << j << ")\t" << img->GetPixel(i,j) << std::endl;;
             int gradient_x = applyConvolution(img, sobel_x, {i,j}); 
             int gradient_y = applyConvolution(img, sobel_y, {i,j}); 
             int gradient_value = sqrt(pow(gradient_x,2) + pow(gradient_y,2));
+            // gradient_values[i][j] = (i == 0 || j == 0) ? 0 : gradient_value;
             gradient_values[i][j] = gradient_value;
         }
     }
