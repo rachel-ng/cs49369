@@ -76,8 +76,8 @@ void locateEdges(Image *img) {
             int gradient_x = applyConvolution(img, sobel_x, {i,j}); 
             int gradient_y = applyConvolution(img, sobel_y, {i,j}); 
             int gradient_value = sqrt(pow(gradient_x,2) + pow(gradient_y,2));
-            // gradient_values[i][j] = (i == 0 || j == 0) ? 0 : gradient_value;
-            gradient_values[i][j] = gradient_value;
+            gradient_values[i][j] = (i == 0 || j == 0) ? 0 : gradient_value;
+            // gradient_values[i][j] = gradient_value;
         }
     }
 
