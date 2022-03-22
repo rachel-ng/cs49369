@@ -120,19 +120,9 @@ int main(int argc, char **argv){
     ThresholdImage(&hough_space_img, threshold); 
     std::unordered_map<int, Object> objects = ConnectedComponents(&hough_space_img);
 
-    if (!WriteImage("thresh_" + output_file, hough_space_img)){
-        std::cout << "FILE " << "thresh_" + output_file << std::endl;
-        return 0;
-    }
-
-
-
-    std::cout << rows << "x" << cols << std::endl;
-
     // calculate weighted average center 
     for (auto &obj : objects) {
         std::set<std::pair<int, int>> pixels = obj.second.pixels_;
-		// std::cout << "pixels: " << pixels << std::endl;
 
         int center_area = 0; 
         int center_row = 0;
