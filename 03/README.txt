@@ -39,12 +39,12 @@ for i in binary_*.pgm;do name=${i##binary_} base=${name%.pgm}; ./h3 ${i} h3_${na
 
 
 for i in Images/*.pgm;do name=${i##*/} base=${name%.pgm}; echo ./h4 ${i} h3_${base}.txt 10 h4_${name}; done;
-for i in Images/*.pgm;do name=${i##*/} base=${name%.pgm}; ./h4 ${i} h3_${base}.txt 10 h4_${name}; done;
+for i in Images/*.pgm;do name=${i##*/} base=${name%.pgm}; ./h4 ${i} h3_${base}.txt 100 h4_${name}; done;
 
 
 
-./h4 Images/hough_complex_1.pgm h3_hough_complex_1.txt 10 h4_hough_complex_1.pgm
-./h4 Images/hough_simple_1.pgm h3_hough_simple_1.txt 10 h4_hough_simple_1.pgm
-./h4 Images/hough_simple_2.pgm h3_hough_simple_2.txt 10 h4_hough_simple_2.pgm
+./h4 Images/hough_complex_1.pgm h3_hough_complex_1.txt 180 h4_hough_complex_1.pgm
+./h4 Images/hough_simple_1.pgm h3_hough_simple_1.txt 150 h4_hough_simple_1.pgm
+./h4 Images/hough_simple_2.pgm h3_hough_simple_2.txt 150 h4_hough_simple_2.pgm
 
 
