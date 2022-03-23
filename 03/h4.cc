@@ -24,6 +24,14 @@ using namespace ComputerVisionProjects;
 
 
 
+
+/*
+check if a value is within a range
+
+INPUT   ints small, value, big 
+        small < value < big 
+OUTPUT  whether value is in range
+*/
 bool between(int small, int value, int big) {
     return small < value && value < big;
 }
@@ -112,9 +120,7 @@ int main(int argc, char **argv){
     // create image of hough space 
     Image hough_space_img;
     hough_space_img.AllocateSpaceAndSetSize(voting_array.size(), voting_array[0].size());
-
     HoughSpaceImage(&hough_space_img, voting_array);
-
     hough_space_img.SetNumberGrayLevels(255);
     ThresholdImage(&hough_space_img, threshold); 
     std::unordered_map<int, Object> objects = ConnectedComponents(&hough_space_img);
@@ -137,13 +143,13 @@ int main(int argc, char **argv){
         obj.second.center_ = {center_row / center_area, center_col / center_area};
     } 
 
-    std::set<std::pair<int, int>> centers; 
-
+    // draw lines
     for (auto &obj : objects) {
         std::pair<int, int> center = obj.second.center_;
         double rho = center.first;
         double theta = 1.0 * center.second * (M_PI / 360.0);
 
+        // calculate x intercept lines
         std::pair<int, int> x_start = {0,-1};
         x_start.second = calculateMissing(rho, theta, x_start.first, -1);
         std::pair<int, int> x_end = {rows - 1, -1};
@@ -157,7 +163,7 @@ int main(int argc, char **argv){
         }
 
 
-
+        // calculate y intercerpt lines 
         std::pair<int, int> y_start = {-1, 0};
         y_start.first = calculateMissing(rho, theta, -1, y_start.second);
         std::pair<int, int> y_end = {-1, cols - 1};

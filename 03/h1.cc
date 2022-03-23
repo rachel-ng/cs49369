@@ -27,7 +27,13 @@ std::vector<std::vector<int>> sobel_y = {{ 1,  2,  1},
                                          { 0,  0,  0}, 
                                          {-1, -2, -1}};
 
+/*
+check if a value is within a range
 
+INPUT   ints small, value, big 
+        small < value < big 
+OUTPUT  whether value is in range
+*/
 bool between(int small, int value, int big) {
     return small < value && value < big;
 }

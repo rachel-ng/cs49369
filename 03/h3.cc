@@ -18,7 +18,13 @@ USAGE: ./h3 input_image output_image voting_array
 using namespace ComputerVisionProjects;
 
 
+/*
+check if a value is within a range
 
+INPUT   ints small, value, big 
+        small < value < big 
+OUTPUT  whether value is in range
+*/
 bool between(int small, int value, int big) {
     return small < value && value < big;
 }
@@ -88,13 +94,11 @@ int main(int argc, char **argv){
 
     std::vector<std::vector<int>> voting_array = HoughTransform(&img);
 
-
     Image hough_space_img;
     hough_space_img.AllocateSpaceAndSetSize(voting_array.size(), voting_array[0].size());
     hough_space_img.SetNumberGrayLevels(255);
 
     std::ofstream voting_array_stream(voting_array_file);
-
     for (int i = 0; i < voting_array.size(); i++) {
         for (int j = 0; j < voting_array[0].size(); j++){ 
             hough_space_img.SetPixel(i, j, voting_array[i][j]);
