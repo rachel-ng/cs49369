@@ -1,3 +1,11 @@
+/*
+
+Rachel Ng
+
+Object class for connected components
+
+*/
+
 #include "Object.h" 
 
 // constructors 

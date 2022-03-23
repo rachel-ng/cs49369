@@ -1,6 +1,14 @@
 #ifndef OBJECT_H_
 #define OBJECT_H_
 
+/*
+
+Rachel Ng
+
+Object class for connected components
+
+*/
+
 #include<iostream>
 #include <set>
 

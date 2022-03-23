@@ -1,7 +1,13 @@
-#include "Object.h"
-
 #ifndef IMUTILS_H 
 #define IMUTILS_H 
+
+/*
+
+Rachel Ng
+
+image utils - code from previous assignments (thresholding and connected components) and helper functions 
+
+*/
 
 #include "image.h"
 #include "Pixel.h"
