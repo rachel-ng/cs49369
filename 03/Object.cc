@@ -2,7 +2,7 @@
 
 Rachel Ng
 
-Object class for connected components
+Object class (struct) for connected components
 
 */
 
