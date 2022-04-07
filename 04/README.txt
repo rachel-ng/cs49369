@@ -7,5 +7,9 @@
 
 ./s2 s0.txt Images/sphere1.pgm Images/sphere2.pgm Images/sphere3.pgm s2.txt 
 
+[57.5, 20, 190.509, -3.1125, 74.7, 237.51, -71.175, 24.6375, 205.641]
+
+./s3 s2.txt Images/sphere1.pgm Images/sphere2.pgm Images/sphere3.pgm 0 0 0
+
 
 
