@@ -22,7 +22,7 @@ INCLUDES= -I.
 LIBS_ALL =  -L/usr/lib -L/usr/local/lib 
 
 # P1
-ALL_OBJ1 = image.o Object.o imutils.o s1.o 
+ALL_OBJ1 = image.o imutils.o s1.o 
 PROGRAM_1 = s1
 $(PROGRAM_1): $(ALL_OBJ1)
 	g++ $(C++FLAG) -o $(EXEC_DIR)/$@ $(ALL_OBJ1) $(INCLUDES) $(LIBS_ALL)
