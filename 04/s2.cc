@@ -55,17 +55,17 @@ std::pair<int, int> GetBrightest(ComputerVisionProjects::Image *img) {
 }
 
 
-std::vector<int> GetVector(std::pair<int, int> center, int radius, std::pair<int, int> pixel) {
-    int x = pixel.first - center.first;
-    int y = pixel.second - center.second;
-    int z = std::sqrt(std::pow(radius, 2) - std::pow(x, 2) - std::pow(y, 2));
-    int magnitude = std::sqrt(std::pow(x, 2) + std::pow(y, 2) + std::pow(z, 2));
+std::vector<double> GetVector(std::pair<int, int> center, int radius, std::pair<int, int> pixel) {
+    double x = pixel.first - center.first;
+    double y = pixel.second - center.second;
+    double z = std::sqrt(std::pow(radius, 2) - std::pow(x, 2) - std::pow(y, 2));
+    double magnitude = std::sqrt(std::pow(x, 2) + std::pow(y, 2) + std::pow(z, 2));
 
-    return std::vector<int> {x, y, z, magnitude};
+    return std::vector<double> {x, y, z, magnitude};
 }
 
-std::vector<int> NormalVector(std::vector<int> vec, int brightness) {
-    return std::vector<int> {(brightness * vec[0])/vec[3], (brightness * vec[1])/vec[3], (brightness * vec[2])/vec[3]};
+std::vector<double> NormalVector(std::vector<double> vec, int brightness) {
+    return std::vector<double> {(brightness * vec[0])/vec[3], (brightness * vec[1])/vec[3], (brightness * vec[2])/vec[3]};
 }
 
 int main(int argc, char **argv){
@@ -107,8 +107,8 @@ int main(int argc, char **argv){
     std::cout << "image 1" << std::endl;
     std::pair<int, int> bright_1 = GetBrightest(&img_1); 
     std::cout << "(" << bright_1.first << ", " << bright_1.second << ")" << std::endl; 
-    std::vector<int> vec1 = GetVector(center, radius, bright_1);
-    std::vector<int> norm1 = NormalVector(vec1, img_1.GetPixel(bright_1.first, bright_1.second));
+    std::vector<double> vec1 = GetVector(center, radius, bright_1);
+    std::vector<double> norm1 = NormalVector(vec1, img_1.GetPixel(bright_1.first, bright_1.second));
     std::cout << "vec\t" << vec1 << std::endl;
     std::cout << "norm\t" << norm1 << std::endl;
     std::cout << std::endl;
@@ -116,8 +116,8 @@ int main(int argc, char **argv){
     std::cout << "image 2" << std::endl;
     std::pair<int, int> bright_2 = GetBrightest(&img_2); 
     std::cout << "(" << bright_2.first << ", " << bright_2.second << ")" << std::endl; 
-    std::vector<int> vec2 = GetVector(center, radius, bright_2);
-    std::vector<int> norm2 = NormalVector(vec2, img_2.GetPixel(bright_2.first, bright_2.second));
+    std::vector<double> vec2 = GetVector(center, radius, bright_2);
+    std::vector<double> norm2 = NormalVector(vec2, img_2.GetPixel(bright_2.first, bright_2.second));
     std::cout << "vec\t" << vec2 << std::endl;
     std::cout << "norm\t" << norm2 << std::endl;
     std::cout << std::endl;
@@ -125,16 +125,16 @@ int main(int argc, char **argv){
     std::cout << "image 3" << std::endl;
     std::pair<int, int> bright_3 = GetBrightest(&img_3); 
     std::cout << "(" << bright_3.first << ", " << bright_3.second << ")" << std::endl; 
-    std::vector<int> vec3 = GetVector(center, radius, bright_3);
-    std::vector<int> norm3 = NormalVector(vec3, img_3.GetPixel(bright_3.first, bright_3.second));
+    std::vector<double> vec3 = GetVector(center, radius, bright_3);
+    std::vector<double> norm3 = NormalVector(vec3, img_3.GetPixel(bright_3.first, bright_3.second));
     std::cout << "vec\t"  << vec3 << std::endl;
     std::cout << "norm\t" << norm3 << std::endl;
     std::cout << std::endl;
 
-    std::vector<std::vector<int>> norms = {norm1, norm2, norm3};
+    std::vector<std::vector<double>> norms = {norm1, norm2, norm3};
 
     std::ofstream output_stream(directions_file);
-    for (std::vector<int> norm : norms) { 
+    for (std::vector<double> norm : norms) { 
         output_stream << norm[0] << " " << norm[1] << " " << norm[2] << std::endl;
         std::cout << norm[0] << " " << norm[1] << " " << norm[2] << std::endl;
     }

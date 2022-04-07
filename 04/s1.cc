@@ -82,5 +82,6 @@ int main(int argc, char **argv){
     
     std::ofstream output_stream(output_file);
     output_stream << center.first << " " << center.second << " " << std::round((lm_dist + ub_dist)/4);
+    output_stream.close()
 }
 
