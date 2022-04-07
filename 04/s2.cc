@@ -108,15 +108,9 @@ int main(int argc, char **argv){
     std::pair<int, int> center = {parameters[0], parameters[1]};
     int radius = parameters[2];
 
-    std::cout << "image 1" << std::endl;
     std::vector<double> light_1 = LightDirection(&img_1, center, radius);
-    
-    std::cout << "image 2" << std::endl;
     std::vector<double> light_2 = LightDirection(&img_2, center, radius);
-
-    std::cout << "image 3" << std::endl;
     std::vector<double> light_3 = LightDirection(&img_3, center, radius);
-
     std::vector<std::vector<double>> directions = {light_1, light_2, light_3};
 
     std::ofstream output_stream(directions_file);
@@ -125,5 +119,3 @@ int main(int argc, char **argv){
     }
     output_stream.close();
 }
-
-
