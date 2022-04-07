@@ -38,7 +38,6 @@ std::pair<int, int> GetBrightest(ComputerVisionProjects::Image *img) {
 
     std::pair<int,int> brightest_pixel = {-1,-1};
     int brightest = -1;
-    // std::cout << "(" << brightest_pixel.first << ", " << brightest_pixel.second << ") " << brightest<< std::endl;
 
     for (int i = 0; i < rows; i++) {
         for(int j = 0; j < cols; j++) {
@@ -46,7 +45,6 @@ std::pair<int, int> GetBrightest(ComputerVisionProjects::Image *img) {
             if (std::max(brightest, cur) == cur) {
                 brightest = cur;
                 brightest_pixel = {i,j};
-                // std::cout << "(" << i << ", " << j << ") " << cur << std::endl;
             }
         }
     }   
@@ -66,6 +64,13 @@ std::vector<double> GetVector(std::pair<int, int> center, int radius, std::pair<
 
 std::vector<double> NormalVector(std::vector<double> vec, int brightness) {
     return std::vector<double> {(brightness * vec[0])/vec[3], (brightness * vec[1])/vec[3], (brightness * vec[2])/vec[3]};
+}
+
+std::vector<double> LightDirection(ComputerVisionProjects::Image *img, std::pair<int, int> center, int radius) {
+    std::pair<int, int> bright = GetBrightest(img);
+    std::vector<double> bright_vector = GetVector(center, radius, bright);
+    std::vector<double> bright_norm = NormalVector(bright_vector, img->GetPixel(bright.first, bright.second));
+    return bright_norm;
 }
 
 int main(int argc, char **argv){
