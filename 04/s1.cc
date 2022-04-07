@@ -1,11 +1,16 @@
 /* 
+
 Rachel Ng 
-h1 - find locations of edge points in image 
+
+s1 - calculate center coordinates and radius of sphere 
+
 USAGE: ./s1 input_image threshold output_file  
+
 */
 
 #include "image.h"
 #include "imutils.h"
+#include "util.h"
 
 #include <cstdio>
 #include <cmath>
