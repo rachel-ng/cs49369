@@ -46,7 +46,7 @@ std::pair<int, int> GetBrightest(ComputerVisionProjects::Image *img) {
             if (std::max(brightest, cur) == cur) {
                 brightest = cur;
                 brightest_pixel = {i,j};
-                // ;std::cout << "(" << i << ", " << j << ") " << cur << std::endl;
+                // std::cout << "(" << i << ", " << j << ") " << cur << std::endl;
             }
         }
     }   

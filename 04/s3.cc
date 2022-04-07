@@ -120,8 +120,27 @@ int main(int argc, char **argv){
     const std::string threshold(argv[6]);
     const std::string output(argv[7]);
     
+
     std::vector<double> directions = GetDirections(input_directions);
     std::cout << directions << std::endl;
+
+    ComputerVisionProjects::Image img_1;
+    if (!ReadImage(image_1, &img_1)) {
+        std::cout << "FILE " << image_1 << "\tunable to read" << std::endl;
+        return 0;
+    }
+
+    ComputerVisionProjects::Image img_2;
+    if (!ReadImage(image_2, &img_2)) {
+        std::cout << "FILE " << image_2 << "\tunable to read" << std::endl;
+        return 0;
+    }
+
+    ComputerVisionProjects::Image img_3;
+    if (!ReadImage(image_3, &img_3)) {
+        std::cout << "FILE " << image_3 << "\tunable to read" << std::endl;
+        return 0;
+    }
 
     double v_det = det(directions); 
     std::cout << "det\t" << v_det << std::endl;
