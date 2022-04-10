@@ -81,19 +81,9 @@ int main(int argc, char **argv){
     }
 
     std::pair<int,int> center = {sum_x/area, sum_y/area};
-    std::cout << "center: " << center << std::endl;
-    std::cout << "lmost: " << l_most << std::endl;
-    std::cout << "rmost: " << r_most << std::endl;
-    std::cout << "umost: " << u_most << std::endl;
-    std::cout << "bmost: " << b_most << std::endl;
 
     double lm_dist = std::sqrt(std::pow(l_most.first - r_most.first, 2) + std::pow(l_most.second - r_most.second, 2)); 
     double ub_dist = std::sqrt(std::pow(u_most.first - b_most.first, 2) + std::pow(u_most.second - b_most.second, 2)); 
-    
-    std::cout << "lm " << lm_dist << std::endl;
-    std::cout << "ub " << ub_dist << std::endl;
-    std::cout << "avg " << std::round((lm_dist + ub_dist)/4) << std::endl;
-    
     
     std::ofstream output_stream(output_file);
     output_stream << center.first << " " << center.second << " " << std::round((lm_dist + ub_dist)/4);

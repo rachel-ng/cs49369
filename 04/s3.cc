@@ -119,7 +119,6 @@ std::vector<double> PixelNorm(std::vector<double> directions, std::vector<int> b
         }
         norm.push_back(n);
     }
-    std::cout << "norm\t" << norm << std::endl;
     return norm;
 }
 
@@ -146,9 +145,6 @@ int main(int argc, char **argv){
 
     std::vector<double> directions = GetDirections(input_directions);
     const std::vector<double> inv = inverse(directions);
-    std::cout << "original  " << directions << std::endl;
-    std::cout << "inverse   " << inv << std::endl;
-    std::cout << "inception " << inverse(inv) << std::endl;
 
     ComputerVisionProjects::Image img_1;
     if (!ReadImage(image_1, &img_1)) {
