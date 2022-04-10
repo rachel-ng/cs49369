@@ -9,8 +9,6 @@ USAGE: ./s2 parameters_file image_1 image_2 image_3 directions_file
 */
 
 #include "image.h"
-#include "util.h"
-
 #include <cstdio>
 #include <cmath>
 #include <iostream>

@@ -1,16 +1,40 @@
+Rachel Ng 
+
+image.* 
+Image class provided by Professor Stamos 
 
 
 
 
+s1.cc 
 
-./s1 Images/sphere0.pgm 100 s0.txt ; open Images/sphere0.pgm s0.txt
+USAGE: ./s1 input_image threshold output_file
 
-./s2 s0.txt Images/sphere1.pgm Images/sphere2.pgm Images/sphere3.pgm s2.txt 
 
-[57.5, 20, 190.509, -3.1125, 74.7, 237.51, -71.175, 24.6375, 205.641]
+s2.cc
 
-./s3 s2.txt Images/object1.pgm Images/object2.pgm Images/object3.pgm 10 120 s3_sphere.pgm
+USAGE: ./s2 parameters_file image_1 image_2 image_3 directions_file
 
+formulas 
+x = pixel.x - center.x 
+y = pixel.y - center.y 
+z = sqrt(r^2 - x^2 - y^2)
+direction magnitude = x^2 + y^2 + z^2 
+
+
+s3.cc 
+
+USAGE: ./s3 input_directions image_1 image_2 image_3 step threshold output
+
+    step = 10 
+    threshold = 85 
+
+
+s4.cc 
+
+USAGE: ./s4 input_directions image_1 image_2 image_3 threshold output
+
+    threshold = 85 
 
 
 

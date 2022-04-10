@@ -10,8 +10,6 @@ USAGE: ./s3 input_directions image_1 image_2 image_3 step threshold output
 */
 
 #include "image.h"
-#include "util.h"
-
 #include <cstdio>
 #include <cmath>
 #include <iostream>
