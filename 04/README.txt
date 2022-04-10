@@ -9,7 +9,8 @@
 
 [57.5, 20, 190.509, -3.1125, 74.7, 237.51, -71.175, 24.6375, 205.641]
 
-./s3 s2.txt Images/sphere1.pgm Images/sphere2.pgm Images/sphere3.pgm 0 0 0
+./s3 s2.txt Images/object1.pgm Images/object2.pgm Images/object3.pgm 10 120 s3_sphere.pgm
+
 
 
 

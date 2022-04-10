@@ -66,6 +66,12 @@ std::vector<double> NormalVector(std::vector<double> vec, int brightness) {
     return std::vector<double> {(brightness * vec[0])/vec[3], (brightness * vec[1])/vec[3], (brightness * vec[2])/vec[3]};
 }
 
+std::vector<double> GetNormal(ComputerVisionProjects::Image *img, std::pair<int, int> center, int radius, std::pair<int, int> pixel) {
+    std::vector<double> vec = CalculateVector(center, radius, pixel);
+    int brightness = img->GetPixel(pixel.first, pixel.second);
+    return NormalVector(vec, brightness); 
+}
+
 std::vector<double> LightDirection(ComputerVisionProjects::Image *img, std::pair<int, int> center, int radius) {
     std::pair<int, int> bright = GetBrightest(img);
     std::vector<double> bright_vector = CalculateVector(center, radius, bright);

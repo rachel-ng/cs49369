@@ -2,16 +2,15 @@
 
 Rachel Ng 
 
-s3 - needle map 
+s4 - albedo 
 
-USAGE: ./s3 input_directions image_1 image_2 image_3 step threshold output
+USAGE: ./s4 input_directions image_1 image_2 image_3 threshold output
 
 
 */
 
 #include "image.h"
 #include "util.h"
-
 #include <cstdio>
 #include <cmath>
 #include <iostream>
@@ -19,26 +18,6 @@ USAGE: ./s3 input_directions image_1 image_2 image_3 step threshold output
 #include <fstream>
 #include <string>
 #include <vector>
-
-/*
-
-0 1 2   a b c 
-3 4 5   d e f 
-6 7 8   g h i 
-
-0a 1b 2c 
-3d 4e 5f 
-6g 7h i8
-
-0 1 2   11 12 13
-3 4 5   21 22 23
-6 7 8   31 32 33
-
-0 11  1 12  2 13 
-3 21  4 22  5 23 
-6 31  7 32  8 33 
-
-*/
 
 std::vector<double> GetDirections(std::string file_name) {  
     std::ifstream file_stream(file_name);
@@ -121,19 +100,13 @@ std::vector<double> PixelNorm(std::vector<double> directions, std::vector<int> b
         }
         norm.push_back(n);
     }
-    std::cout << "norm\t" << norm << std::endl;
     return norm;
-}
-
-std::vector<double> UnitNorm(std::vector<double> norm) {
-    double divide = std::sqrt(std::pow(norm[0],2) + std::pow(norm[1],2) + std::pow(norm[2],2));
-    return std::vector<double> {norm[0]/divide, norm[1]/divide, norm[2]/divide};
 }
 
 int main(int argc, char **argv){
 
-    if (argc!=8) {
-        printf("USAGE: %s input_directions image_1 image_2 image_3 step threshold output\n", argv[0]);
+    if (argc!=7) {
+        printf("USAGE: %s input_directions image_1 image_2 image_3 threshold output\n", argv[0]);
         return 0;
     }
 
@@ -141,16 +114,12 @@ int main(int argc, char **argv){
     const std::string image_1(argv[2]);
     const std::string image_2(argv[3]);
     const std::string image_3(argv[4]);
-    const int step(std::stoi(argv[5]));
-    const int threshold(std::stoi(argv[6]));
-    const std::string output(argv[7]);
+    const int threshold(std::stoi(argv[5]));
+    const std::string output(argv[6]);
     
 
     std::vector<double> directions = GetDirections(input_directions);
     const std::vector<double> inv = inverse(directions);
-    std::cout << "original  " << directions << std::endl;
-    std::cout << "inverse   " << inv << std::endl;
-    std::cout << "inception " << inverse(inv) << std::endl;
 
     ComputerVisionProjects::Image img_1;
     if (!ReadImage(image_1, &img_1)) {
@@ -173,19 +142,26 @@ int main(int argc, char **argv){
     const int rows = img_1.num_rows();
     const int cols = img_1.num_columns(); 
 
-    for (int i = 0; i < rows; i += step) {
-        for (int j = 0; j < rows; j += step) {
+    std::vector<std::vector<double>> magnitudes(rows, std::vector<double>(cols, 0));
+    double max_bright = 0; 
+
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < rows; j++) {
             if (isVisible(&img_1,{i,j},threshold) && isVisible(&img_2,{i,j},threshold) && isVisible(&img_3,{i,j},threshold)) {
-                std::vector<double> unit_norm = UnitNorm(PixelNorm(inv, std::vector<int> {img_1.GetPixel(i,j), img_2.GetPixel(i,j), img_3.GetPixel(i,j)}));
-				ComputerVisionProjects::DrawLine(i, j, 
-			        i + (int) (unit_norm[0]*10), j + (int) (unit_norm[1]*10),
-					255,
-					&img_1);
-                img_1.SetPixel(i,j,0);
-  
+                std::vector<double> norm = PixelNorm(inv, std::vector<int> {img_1.GetPixel(i,j), img_2.GetPixel(i,j), img_3.GetPixel(i,j)});
+                double magnitude = std::sqrt(std::pow(norm[0],2) + std::pow(norm[1],2) + std::pow(norm[2],2));
+                magnitudes[i][j] = magnitude; 
+                max_bright = std::max(max_bright, magnitude);
             }
+            else {
+                img_1.SetPixel(i,j, 0);
+            }
+        }
+    }
 
-
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < rows; j++) {
+            img_1.SetPixel(i, j, ((255 * magnitudes[i][j]) / max_bright));
         }
     }
 
