@@ -58,6 +58,7 @@ int main(int argc, char **argv){
 
     ThresholdImage(&img, threshold); 
 
+    // find center and outermost  
     int sum_x = 0;
     int sum_y = 0;
     int area = 0;

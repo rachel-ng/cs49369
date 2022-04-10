@@ -18,6 +18,11 @@ USAGE: ./s2 parameters_file image_1 image_2 image_3 directions_file
 #include <vector>
 
 
+/*
+get parameters from file 
+INPUT   file name 
+OUTPUT  vector with parameters
+*/
 std::vector<int> GetParameters(std::string file_name) {  
     std::ifstream file_stream(file_name);
     std::vector<int> parameters; 
